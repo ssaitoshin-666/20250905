@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>置農レジシステム</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f4f7;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 25px 40px;
+            border-radius: 12px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        .product-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .product-table th, .product-table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .product-table th {
+            background-color: #3498db;
+            color: white;
+            font-weight: bold;
+        }
+
+        .product-table tr:nth-child(even) {
+            background-color: #f2f7fa;
+        }
+
+        input[type="number"] {
+            width: 80px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: right;
+        }
+        
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        .totals {
+            margin-top: 25px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: right;
+            border-top: 2px solid #333;
+            padding-top: 15px;
+        }
+
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        .buttons button {
+            padding: 12px 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .buttons #clearButton {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .buttons #clearButton:hover {
+            background-color: #c0392b;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>置農レジシステム</h1>
+
+    <table class="product-table">
+        <thead>
+            <tr>
+                <th>商品名</th>
+                <th>単価(円)</th>
+                <th>個数</th>
+                <th>小計(円)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <script>
+                for (let i = 1; i <= 10; i++) {
+                    document.write(`
+                        <tr>
+                            <td><input type="text" value="" id="productName${i}"></td>
+                            <td><input type="number" id="price${i}" value="0" min="0" oninput="calculateTotal()"></td>
+                            <td><input type="number" id="quantity${i}" value="0" min="0" oninput="calculateTotal()"></td>
+                            <td><span id="subtotal${i}">0</span></td>
+                        </tr>
+                    `);
+                }
+            </script>
+        </tbody>
+    </table>
+
+    <div class="totals">
+        <p>合計金額: <span id="grandTotal">0</span>円</p>
+    </div>
+
+    <div class="buttons">
+        <button id="clearButton" onclick="clearQuantities()">クリア</button>
+    </div>
+</div>
+
+<script>
+    function calculateTotal() {
+        let grandTotal = 0;
+        for (let i = 1; i <= 10; i++) {
+            const price = parseFloat(document.getElementById(`price${i}`).value) || 0;
+            const quantity = parseFloat(document.getElementById(`quantity${i}`).value) || 0;
+            const subtotal = price * quantity;
+            document.getElementById(`subtotal${i}`).textContent = subtotal.toLocaleString();
+            grandTotal += subtotal;
+        }
+        document.getElementById('grandTotal').textContent = grandTotal.toLocaleString();
+    }
+
+    function clearQuantities() {
+        for (let i = 1; i <= 10; i++) {
+            document.getElementById(`quantity${i}`).value = 0;
+        }
+        calculateTotal();
+    }
+</script>
+
+</body>
+</html>
